@@ -127,7 +127,7 @@ abstract class BaseController extends Controller {
             599 => 'Network connect timeout error',
         ];
 
-        return isset($data[$code]) ? $data[$code] : null;
+        return is_numeric($code) && isset($data[$code]) ? $data[$code] : null;
     }
 
     /**

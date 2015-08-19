@@ -1,12 +1,12 @@
 <?php
 
-namespace Rest\Validators;
+namespace PhalconZ\Rest\Validators;
 
 use MongoId;
 use Zend\Validator\Exception;
 use Zend\Validator\ValidatorInterface;
 
-class MongoIdString implements ValidatorInterface {
+class MongoIdStringValidator implements ValidatorInterface {
 
     private $valid = false;
 
