@@ -1,0 +1,25 @@
+{
+    "name": "serus22/phalconz",
+    "description": "Phalcon project build for easy php apps",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "phalcon",
+        "zf2",
+        "rest",
+        "php"
+    ],
+    "homepage": "https://github.com/serus22/phalconz",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "zendframework/zend-filter": "^2.5",
+        "zendframework/zend-validator": "^2.5",
+        "zendframework/zend-inputfilter": "^2.5"
+    },
+    "authors": [
+        {
+            "name": "serus",
+            "email": "hruzmatus@gmail.com"
+        }
+    ]
+}
