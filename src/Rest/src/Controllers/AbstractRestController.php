@@ -39,8 +39,7 @@ abstract class AbstractRestController extends BaseController {
     }
 
     public function indexAction() {
-        $this->response()->setStatusCode(200);
-        try {
+        return $this->handleRequest(function() {
             $id = $this->getId();
             $data = $this->getData();
             $out = null;
@@ -58,6 +57,13 @@ abstract class AbstractRestController extends BaseController {
             else
                 $this->response()->setStatusCode(200);
             return $this->jsonOutput($out);
+        });
+    }
+
+    public function handleRequest($function) {
+        $this->response()->setStatusCode(200);
+        try {
+            return $function();
         } catch (InvalidData $e) {
             return $this->jsonOutput([
                 'message' => 'Validation error',
@@ -71,10 +77,14 @@ abstract class AbstractRestController extends BaseController {
             return $this->jsonOutput([
                 'message' => 'Unknown collection',
             ], 500);
+        } catch(RestException $e) {
+            return $this->jsonOutput([
+                'message' => $e->getMessage()
+            ], $e->getCode());
         } catch(MongoException $e) {
-            return $this->jsonOutput(500, [
+            return $this->jsonOutput([
                 'message' => 'MongoException #' . $e.$this->getCode() . ', ' . $e->getMessage()
-            ]);
+            ], 500);
         } catch(\Exception $e) {
             return $this->jsonOutput([
                 'message' => 'Error #' . $e->getCode() . ', ' . $e->getMessage() . ', file: ' . $e->getFile() . ', line: ' . $e->getLine()
