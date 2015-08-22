@@ -15,7 +15,7 @@
         "zendframework/zend-filter": "^2.5",
         "zendframework/zend-validator": "^2.5",
         "zendframework/zend-inputfilter": "^2.5",
-        "zendframework/zend-servicemanager": "dev-master"
+        "zendframework/zend-servicemanager": "^2.6"
     },
     "authors": [
         {
