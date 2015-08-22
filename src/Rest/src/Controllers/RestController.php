@@ -64,7 +64,6 @@ abstract class RestController extends AbstractRestController {
         $obj = @forward_static_call($this->collectionName() . '::findById', new \MongoId($id));
         if(! $obj) throw new RestDocumentNotFoundException();
         foreach($data as $key => $value) {
-            if($key === '_id') continue;
             $obj->$key = $value;
         }
         $obj->save();
