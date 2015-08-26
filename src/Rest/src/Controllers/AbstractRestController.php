@@ -83,7 +83,7 @@ abstract class AbstractRestController extends BaseController {
             ], $e->getCode());
         } catch(MongoException $e) {
             return $this->jsonOutput([
-                'message' => 'MongoException #' . $e.$this->getCode() . ', ' . $e->getMessage()
+                'message' => 'MongoException #' . $e->getCode() . ', ' . $e->getMessage()
             ], 500);
         } catch(\Exception $e) {
             return $this->jsonOutput([
