@@ -51,7 +51,7 @@ abstract class BaseController extends Controller {
         return $response;
     }
 
-    protected function httpMessage($code) {
+    public static function httpMessage($code) {
         $data = [
             100 => 'Continue',
             101 => 'Switching Protocols',
@@ -127,7 +127,7 @@ abstract class BaseController extends Controller {
             599 => 'Network connect timeout error',
         ];
 
-        return isset($data[$code]) ? $data[$code] : null;
+        return is_numeric($code) && isset($data[$code]) ? $data[$code] : null;
     }
 
     /**

@@ -1,14 +1,14 @@
 <?php
 
-namespace Rest\Validators;
+namespace PhalconZ\Rest\Validators;
 
 use MongoId;
 use Zend\Validator\Exception;
 use Zend\Validator\ValidatorInterface;
 
-class MongoIdString implements ValidatorInterface {
+class MongoIdStringValidator implements ValidatorInterface {
 
-    private $valid = false;
+    private $valid = true;
 
     /**
      * Returns true if and only if $value meets the validation requirements
@@ -23,8 +23,7 @@ class MongoIdString implements ValidatorInterface {
      */
     public function isValid($value) {
         try {
-            if(! $value instanceof MongoId) new MongoId($value . "");
-            $this->valid = true;
+            $this->valid = !! (null || $value instanceof MongoId || MongoId::isValid($value));
         } catch(\Exception $e) {}
         return $this->valid;
     }

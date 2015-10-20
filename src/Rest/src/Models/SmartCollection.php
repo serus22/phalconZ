@@ -2,9 +2,9 @@
 
 namespace PhalconZ\Rest\Models;
 
-use Rest\Controllers\RestValidationException;
-use Zend\Filter\Filter;
+use Zend\InputFilter\InputFilter;
 use Phalcon\Mvc\Collection;
+use PhalconZ\Rest\Controllers\RestValidationException;
 
 abstract class SmartCollection extends Collection {
 
@@ -46,13 +46,13 @@ abstract class SmartCollection extends Collection {
     }
 
     /**
-     * @return Filter|null
+     * @return InputFilter
      */
     public function filter() {
-        if($this->__filter instanceof Filter) return $this->__filter;
-        $class = str_replace('Filters', '', __NAMESPACE__) . __CLASS__;
+        if($this->__filter instanceof InputFilter) return $this->__filter;
+        $class = str_replace('Models', 'Filters', get_called_class()) . 'Filter';
         if(class_exists($class))
-            $this->__filter = $class($this);
+            $this->__filter = new $class($this);
         return $this->__filter;
     }
 
@@ -61,8 +61,11 @@ abstract class SmartCollection extends Collection {
      * @throws RestValidationException
      */
     public function validation() {
-        if(empty($this->filter()) || $this->filter()->setData($this->toArray())->isValid()) return true;
-        throw new RestValidationException($this->filter());
+        if(empty($this->filter())) return true;
+        $data = $this->toArray();
+        $this->filter()->setData($data);
+        if($this->filter()->isValid()) return true;
+        throw new RestValidationException($this->filter()->getMessages());
     }
 
 }

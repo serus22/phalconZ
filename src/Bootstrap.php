@@ -12,6 +12,7 @@ use Phalcon\Di,
     Phalcon\CLI\Console as ConsoleApp,
     Phalcon\Config\Adapter\Php as Config,
     Phalcon\DI\FactoryDefault\CLI as CliDI,
+    Phalcon\Session\Adapter\Memcache as SessionAdapter,
     Phalcon\Mvc\Collection\Manager as CollectionManager;
 
 
@@ -38,6 +39,7 @@ class Bootstrap {
         if($this->__config === null) {
             $this->__config = new Config(APP_PATH . '/config/application.config.php');
             $this->__config->merge(new Config(APP_PATH . '/config/local.php'));
+            $this->__config->merge(new Config(APP_PATH . '/vendor/serus22/phalconz/src/config.php'));
             $this->loader();
         }
         return $name ? @$this->__config[$name]  : $this->__config;
@@ -53,8 +55,21 @@ class Bootstrap {
             'Zend\\InputFilter' => APP_PATH . '/vendor/zendframework/zend-inputfilter/src/',
             'Zend\\Stdlib'      => APP_PATH . '/vendor/zendframework/zend-stdlib/src/',
             'Zend\\Validator'   => APP_PATH . '/vendor/zendframework/zend-validator/src/',
+<<<<<<< HEAD
             'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
+=======
+            'Zend\\ServiceManager' => APP_PATH . '/vendor/zendframework/zend-servicemanager/src/',
+            'Interop\\Container'=> APP_PATH . '/vendor/container-interop/container-interop/src/Interop/Container/',
+            'PhalconZ'          => APP_PATH . '/vendor/serus22/phalconz/src/',
+            'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
+            'PhalconZ\\ZUser'   => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/src/',
+>>>>>>> bd37335e964bf59d0ede3902acdf13e06f5dbc7b
         ])->register();
+
+        if($this->config('zuser')) {
+            $zuserConfig = new Config(APP_PATH . '/vendor/serus22/phalconz/src/ZUser/config/module.config.php');
+            $this->__config->merge($zuserConfig);
+        }
 
         foreach($this->config('modules') as $module) {
             //Register loader with module namespaces
@@ -77,6 +92,14 @@ class Bootstrap {
                 'path' => APP_PATH . '/modules/' . $module . '/Module.php',
             ];
         }
+
+        if($this->config('zuser')) {
+            $modules['ZUser'] = [
+                'className' => 'PhalconZ\ZUser\Module',
+                'path' => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/Module.php',
+            ];
+        }
+
         return $modules;
     }
 

@@ -26,13 +26,13 @@ abstract class RestController extends AbstractRestController {
      * Return list of items or specific object
      * @param mixed|null $id
      * @return array|object
-     * @throws \PhalconZ\Rest\Controllers\RestNotFoundException
+     * @throws \PhalconZ\Rest\Controllers\RestDocumentNotFoundException
      */
     public function get($id = null) {
         if($id) {
             $object = @forward_static_call($this->collectionName() . '::findById', new \MongoId($id));
             if($object) return $object;
-            throw new RestNotFoundException;
+            throw new RestDocumentNotFoundException;
         }
         $list = forward_static_call($this->collectionName() .'::Find');
         return $list;
@@ -58,13 +58,12 @@ abstract class RestController extends AbstractRestController {
      * @param mixed $id
      * @param object $data
      * @return \PhalconZ\Rest\Models\SmartCollection
-     * @throws \PhalconZ\Rest\Controllers\RestNotFoundException
+     * @throws \PhalconZ\Rest\Controllers\RestDocumentNotFoundException
      */
     public function put($id, $data) {
         $obj = @forward_static_call($this->collectionName() . '::findById', new \MongoId($id));
-        if(! $obj) throw new RestNotFoundException();
+        if(! $obj) throw new RestDocumentNotFoundException();
         foreach($data as $key => $value) {
-            if($key === '_id') continue;
             $obj->$key = $value;
         }
         $obj->save();
