@@ -3,17 +3,17 @@
 namespace PhalconZ;
 
 use Phalcon\Di,
-    \MongoClient,
-    Phalcon\Loader,
-    Phalcon\Mvc\View,
-    Phalcon\Mvc\Router,
-    Phalcon\Mvc\Application,
-    Phalcon\DI\FactoryDefault,
-    Phalcon\CLI\Console as ConsoleApp,
-    Phalcon\Config\Adapter\Php as Config,
-    Phalcon\DI\FactoryDefault\CLI as CliDI,
-    Phalcon\Session\Adapter\Memcache as SessionAdapter,
-    Phalcon\Mvc\Collection\Manager as CollectionManager;
+  \MongoClient,
+  Phalcon\Loader,
+  Phalcon\Mvc\View,
+  Phalcon\Mvc\Router,
+  Phalcon\Mvc\Application,
+  Phalcon\DI\FactoryDefault,
+  Phalcon\CLI\Console as ConsoleApp,
+  Phalcon\Config\Adapter\Php as Config,
+  Phalcon\DI\FactoryDefault\CLI as CliDI,
+  Phalcon\Session\Adapter\Memcache as SessionAdapter,
+  Phalcon\Mvc\Collection\Manager as CollectionManager;
 
 
 class Bootstrap {
@@ -46,24 +46,17 @@ class Bootstrap {
     }
 
     private function loader() {
-
-
-
         $loader = new Loader();
         $loader->registerNamespaces([
-            'Zend\\Filter'      => APP_PATH . '/vendor/zendframework/zend-filter/src/',
-            'Zend\\InputFilter' => APP_PATH . '/vendor/zendframework/zend-inputfilter/src/',
-            'Zend\\Stdlib'      => APP_PATH . '/vendor/zendframework/zend-stdlib/src/',
-            'Zend\\Validator'   => APP_PATH . '/vendor/zendframework/zend-validator/src/',
-<<<<<<< HEAD
-            'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
-=======
-            'Zend\\ServiceManager' => APP_PATH . '/vendor/zendframework/zend-servicemanager/src/',
-            'Interop\\Container'=> APP_PATH . '/vendor/container-interop/container-interop/src/Interop/Container/',
-            'PhalconZ'          => APP_PATH . '/vendor/serus22/phalconz/src/',
-            'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
-            'PhalconZ\\ZUser'   => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/src/',
->>>>>>> bd37335e964bf59d0ede3902acdf13e06f5dbc7b
+          'Zend\\Filter'      => APP_PATH . '/vendor/zendframework/zend-filter/src/',
+          'Zend\\InputFilter' => APP_PATH . '/vendor/zendframework/zend-inputfilter/src/',
+          'Zend\\Stdlib'      => APP_PATH . '/vendor/zendframework/zend-stdlib/src/',
+          'Zend\\Validator'   => APP_PATH . '/vendor/zendframework/zend-validator/src/',
+          'Zend\\ServiceManager' => APP_PATH . '/vendor/zendframework/zend-servicemanager/src/',
+          'Interop\\Container'=> APP_PATH . '/vendor/container-interop/container-interop/src/Interop/Container/',
+          'PhalconZ'          => APP_PATH . '/vendor/serus22/phalconz/src/',
+          'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
+          'PhalconZ\\ZUser'   => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/src/',
         ])->register();
 
         if($this->config('zuser')) {
@@ -75,7 +68,7 @@ class Bootstrap {
             //Register loader with module namespaces
             $loader = new Loader();
             $loader->registerNamespaces([
-                $module => APP_PATH . '/modules/' . $module . '/src/'
+              $module => APP_PATH . '/modules/' . $module . '/src/'
             ])->register();
 
             //Merge config
@@ -88,15 +81,15 @@ class Bootstrap {
         $modules = [];
         foreach($this->config('modules') as $module) {
             $modules[$module] = [
-                'className' => $module . '\Module',
-                'path' => APP_PATH . '/modules/' . $module . '/Module.php',
+              'className' => $module . '\Module',
+              'path' => APP_PATH . '/modules/' . $module . '/Module.php',
             ];
         }
 
         if($this->config('zuser')) {
             $modules['ZUser'] = [
-                'className' => 'PhalconZ\ZUser\Module',
-                'path' => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/Module.php',
+              'className' => 'PhalconZ\ZUser\Module',
+              'path' => APP_PATH . '/vendor/serus22/phalconz/src/ZUser/Module.php',
             ];
         }
 
@@ -126,7 +119,7 @@ class Bootstrap {
         $di->setShared('view', function () {
             $view = new View();
             $view->registerEngines([
-                '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
+              '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
             ]);
             return $view;
         });
