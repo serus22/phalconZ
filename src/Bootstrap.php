@@ -44,13 +44,16 @@ class Bootstrap {
     }
 
     private function loader() {
+
+
+
         $loader = new Loader();
         $loader->registerNamespaces([
             'Zend\\Filter'      => APP_PATH . '/vendor/zendframework/zend-filter/src/',
             'Zend\\InputFilter' => APP_PATH . '/vendor/zendframework/zend-inputfilter/src/',
             'Zend\\Stdlib'      => APP_PATH . '/vendor/zendframework/zend-stdlib/src/',
             'Zend\\Validator'   => APP_PATH . '/vendor/zendframework/zend-validator/src/',
-            'PhalconZ\\Rest'    => APP_PATH . '/vendor/phalconz/Rest/src/',
+            'PhalconZ\\Rest'    => APP_PATH . '/vendor/serus22/phalconz/src/Rest/src/',
         ])->register();
 
         foreach($this->config('modules') as $module) {
