@@ -19,7 +19,7 @@ return [
         '/auth/register' => [
             'module' => 'ZUser',
             'controller' => 'auth',
-            'action' => 'register'
+            'action' => 'index'
         ]
     ],
 ];
