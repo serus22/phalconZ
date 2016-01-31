@@ -6,8 +6,8 @@ use Zend\InputFilter\InputFilter;
 use Phalcon\Mvc\Collection;
 use PhalconZ\Rest\Controllers\RestValidationException;
 
-abstract class SmartCollection extends Collection {
-
+abstract class SmartCollection extends Collection
+{
     /**
      * @var array
      */
@@ -22,7 +22,8 @@ abstract class SmartCollection extends Collection {
     /**
      * @return array
      */
-    public function getReservedAttributes() {
+    public function getReservedAttributes()
+    {
         $this->__blackList['__blackList'] = '__blacklList';
         $this->__blackList['__filter'] = '__filter';
         return array_values($this->__blackList);
@@ -32,7 +33,8 @@ abstract class SmartCollection extends Collection {
      * @param $name
      * @return SmartCollection
      */
-    public function ignore($name) {
+    public function ignore($name)
+    {
         $this->__blackList[$name] = $name;
         return $this;
     }
@@ -48,7 +50,8 @@ abstract class SmartCollection extends Collection {
     /**
      * @return InputFilter
      */
-    public function filter() {
+    public function filter()
+    {
         if($this->__filter instanceof InputFilter) return $this->__filter;
         $class = str_replace('Models', 'Filters', get_called_class()) . 'Filter';
         if(class_exists($class))
@@ -60,12 +63,22 @@ abstract class SmartCollection extends Collection {
      * @return bool
      * @throws RestValidationException
      */
-    public function validation() {
+    public function validation()
+    {
         if(empty($this->filter())) return true;
         $data = $this->toArray();
         $this->filter()->setData($data);
         if($this->filter()->isValid()) return true;
         throw new RestValidationException($this->filter()->getMessages());
+    }
+
+    public function __call($name, $params)
+    {
+        if(substr($name, 0,3) === "get") {
+            $a = lcfirst(substr($name, -1 * (strlen($name)-3)));
+            if(isSet($this->$a)) return $this->$a;
+        }
+        return null;
     }
 
 }
