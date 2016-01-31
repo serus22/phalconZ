@@ -56,7 +56,7 @@ abstract class AbstractRestController extends BaseController {
                 $this->response()->setStatusCode(200);
             else
                 $this->response()->setStatusCode(200);
-            return $this->jsonOutput($out);
+return $this->jsonOutput($out);
         });
     }
 

@@ -124,7 +124,7 @@ class Bootstrap {
             return $view;
         });
 
-        $di->set('config', $this->config());
+        $di->setShared('config', $this->config());
         $di->set('router', $this->mvcRouter());
 
         $this->database($di);

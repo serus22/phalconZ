@@ -2,7 +2,7 @@
 
 return [
     'zuser' => [
-        'userCollection' => 'PhalzonZ\ZUser\Models\User'
+        'userCollection' => "PhalconZ\\ZUser\\Models\\ZUser"
     ],
 
     'route' => [
@@ -19,7 +19,7 @@ return [
         '/auth/register' => [
             'module' => 'ZUser',
             'controller' => 'auth',
-            'action' => 'index'
+            'action' => 'register'
         ]
     ],
 ];

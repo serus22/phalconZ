@@ -5,12 +5,16 @@ namespace PhalconZ\ZUser\Controllers;
 use Phalcon\Text;
 use Phalcon\Http\Request;
 use PhalconZ\Rest\Controllers\RestException;
-use PhalconZ\ZUser\Models\ZUser;
 use Phalcon\Mvc\CollectionInterface;
 use PhalconZ\Rest\Controllers\AbstractRestController;
 
 class AuthController extends AbstractRestController
 {
+
+  public function getUserDocument()
+  {
+    return $this->config['zuser']['userCollection'];
+  }
 
   public function loginAction()
   {
@@ -39,26 +43,29 @@ class AuthController extends AbstractRestController
     });
   }
 
-  public function post($data)
+  public function registerAction()
   {
-    $req = new Request();
-    if ($req->isPost()) {
-      $post = json_decode($req->getRawBody());
-      $user = new ZUser();
+    return $this->handleRequest(function() {
+      $req = new Request();
+      if ($req->isPost()) {
+        $post = json_decode($req->getRawBody());
+        $a = $this->getUserDocument();
+        $user = new $a();
 
-      $user->salt = Text::random(Text::RANDOM_ALNUM);
-      $user->password = $this->hash($post->password, $user->salt);
-      unset($post->password);
-      $post = (array) $post;
-      foreach($post as $key => $value)
-        $user->$key = $value;
+        $user->salt = Text::random(Text::RANDOM_ALNUM);
+        $user->password = $this->hash($post->password, $user->salt);
+        unset($post->password);
+        $post = (array)$post;
+        foreach ($post as $key => $value)
+          $user->$key = $value;
 
-      $user->save();
-      $data = null;
-    } else if($req->isOptions()) {
-      $data = null;
-    }
-    return $user;
+        $user->save();
+        $this->session->set('user', $user);
+      } else if ($req->isOptions()) {
+        return '';
+      }
+      return $this->jsonOutput($user);
+    });
   }
 
   public function logoutAction()
@@ -71,7 +78,7 @@ class AuthController extends AbstractRestController
 
   protected function auth($userid, $password, $remember = false)
   {
-    $user = ZUser::findFirst([
+    $user = forward_static_call($this->getUserDocument() . '::findFirst', [
       [
         '$or' => [
           ['username' => $userid],
@@ -82,9 +89,8 @@ class AuthController extends AbstractRestController
     if(empty($user)) return null;
     if(! $this->security->checkHash("super_static_salt" . $password . $user->salt, $user->password)) return null;
     unset($user->password, $user->salt);
-    $session = $this->getDI()->getShared('session');
-    $session->set('user', $user);
-    $session->set('loggedAt', time());
+    $this->session->set('user', $user);
+    $this->session->set('loggedAt', time());
     return $user;
   }
 
@@ -124,5 +130,15 @@ class AuthController extends AbstractRestController
    */
   public function delete($id)
   {
+  }
+
+  /**
+   * Create record
+   * @param array
+   * @return array
+   */
+  public function post($data)
+  {
+    $this->registerAction();
   }
 }
