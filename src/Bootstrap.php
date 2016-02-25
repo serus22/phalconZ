@@ -3,9 +3,9 @@
 namespace PhalconZ;
 
 use Phalcon\Di,
-  \MongoClient,
+  MongoClient,
   Phalcon\Loader,
-  Phalcon\Mvc\View,
+  PhalconZ\Lib\View,
   Phalcon\Mvc\Router,
   Phalcon\Mvc\Application,
   Phalcon\DI\FactoryDefault,
@@ -119,7 +119,7 @@ class Bootstrap {
         $di->setShared('view', function () {
             $view = new View();
             $view->registerEngines([
-              '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
+              '.phtml' => 'PhalconZ\Lib\PhpViewEngine'
             ]);
             return $view;
         });
