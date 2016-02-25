@@ -20,7 +20,7 @@ class View extends PhalconView {
     if(! $name || ! isSet($this->$name)) return;
     $list = class_implements($this->$name);
     $a = $this->$name;
-    if(in_array("PhalconZ\\Lib\\InvokableInterface", $list)) return $a->__invoke();
+    if($a instanceof AbstractViewHelper) return $a->__invoke($args);
     return $this;
   }
 }
