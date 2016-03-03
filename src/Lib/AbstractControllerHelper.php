@@ -6,7 +6,7 @@ use Phalcon\Di;
 use Phalcon\DiInterface;
 use Phalcon\Di\InjectionAwareInterface;
 
-abstract class AbstractViewHelper implements InjectionAwareInterface {
+abstract class AbstractControllerHelper implements InjectionAwareInterface {
 
   private $_di;
 
