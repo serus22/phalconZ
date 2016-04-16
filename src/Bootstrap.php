@@ -2,6 +2,7 @@
 
 namespace PhalconZ;
 
+use Phalcon\Crypt;
 use Phalcon\Di,
   MongoClient,
   Phalcon\Loader,
@@ -99,6 +100,7 @@ class Bootstrap {
     private function mvcRouter() {
         //Register routing
         $router = new Router();
+        $router->clear();
         foreach($this->config('route') as $url => $route)
             $router->add($url, $route->toArray());
         return $router;

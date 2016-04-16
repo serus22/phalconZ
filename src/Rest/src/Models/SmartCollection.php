@@ -81,4 +81,35 @@ abstract class SmartCollection extends Collection
         return null;
     }
 
+    /**
+     * Updates a model instance. Returning true on success or false otherwise
+     *
+     * @return boolean
+     */
+    public function update()
+    {
+      // TODO: Implement update() method.
+    }
+
+    /**
+     * Returns a cloned collection
+     *
+     * @param \Phalcon\Mvc\Collection $collection
+     * @param array $document
+     * @return \Phalcon\Mvc\Collection
+     */
+    public function dumpResult($collection, $document)
+    {
+      // TODO: Implement dumpResult() method.
+    }
+
+    /**
+     * Creates a model instance. Returning true on success or false otherwise
+     *
+     * @return boolean
+     */
+    public function create()
+    {
+      // TODO: Implement create() method.
+    }
 }
