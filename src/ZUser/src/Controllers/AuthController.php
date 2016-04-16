@@ -20,9 +20,8 @@ class AuthController extends AbstractRestController
   {
     $this->response()->setStatusCode(401);
     return $this->handleRequest(function() {
-      $session = $this->getDI()->getShared('session');
-      $loggedAt = $session->get('loggedAt');
-      $user = $session->get('user');
+      $loggedAt = $this->session->get('loggedAt');
+      $user = $this->session->get('user');
       if (time() - $loggedAt < 1200) {
         $this->response()->setStatusCode(200);
         return $this->jsonOutput($user);
@@ -70,9 +69,8 @@ class AuthController extends AbstractRestController
 
   public function logoutAction()
   {
-    $session = $this->getDI()->get('session');
-    $session->remove('user');
-    $session->remove('loggedAt');
+    $this->session->remove('user');
+    $this->session->remove('loggedAt');
     return $this->jsonOutput(null, 200);
   }
 

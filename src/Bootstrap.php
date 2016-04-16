@@ -105,12 +105,13 @@ class Bootstrap {
     }
 
     private function mvcDi() {
-        $this->config();
+        $c = $this->config();
         $di = new FactoryDefault();
         //TODO:url
         //Register a session container
-        $di->setShared('session', function () {
+        $di->setShared('session', function () use ($c) {
             $session = new SessionAdapter();
+            session_set_cookie_params(0, '/', $c->hostname);
             $session->start();
             return $session;
         });
